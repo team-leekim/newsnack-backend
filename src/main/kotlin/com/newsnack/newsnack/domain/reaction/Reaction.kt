@@ -14,8 +14,9 @@ class Reaction(
     @JoinColumn(name = "ai_article_id", nullable = false)
     val aiArticle: AiArticle,
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "reaction_type", nullable = false, length = 20)
-    val reactionType: String,
+    val reactionType: ReactionType,
 
     @Column(name = "created_at", nullable = false, updatable = false)
     val createdAt: OffsetDateTime = OffsetDateTime.now()

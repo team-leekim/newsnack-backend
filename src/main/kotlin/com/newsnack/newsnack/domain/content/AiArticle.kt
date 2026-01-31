@@ -16,8 +16,9 @@ class AiArticle(
     @Column(name = "issue_id")
     val issueId: Long? = null,
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "content_type", nullable = false)
-    val contentType: String, // WEBTOON, CARD_NEWS
+    val contentType: ArticleType,
 
     @Column(nullable = false)
     val title: String,
