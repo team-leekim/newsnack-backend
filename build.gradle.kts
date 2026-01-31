@@ -26,7 +26,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-webmvc")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("tools.jackson.module:jackson-module-kotlin")
     implementation("io.hypersistence:hypersistence-utils-hibernate-71:3.15.1")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
