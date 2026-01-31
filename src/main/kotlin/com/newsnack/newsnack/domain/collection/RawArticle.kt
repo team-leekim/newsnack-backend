@@ -1,7 +1,6 @@
-package com.newsnack.newsnack.domain.article
+package com.newsnack.newsnack.domain.collection
 
 import com.newsnack.newsnack.domain.category.Category
-import com.newsnack.newsnack.global.common.BaseEntity
 import jakarta.persistence.*
 import java.time.OffsetDateTime
 

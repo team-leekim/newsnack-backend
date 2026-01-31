@@ -1,4 +1,4 @@
-package com.newsnack.newsnack.domain.article
+package com.newsnack.newsnack.domain.collection
 
 import com.newsnack.newsnack.domain.category.Category
 import jakarta.persistence.*
@@ -11,8 +11,8 @@ class Issue(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
 
-    @Column(name = "issue_title", length = 255)
-    val issueTitle: String? = null,
+    @Column(name = "title", length = 255)
+    val title: String? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
