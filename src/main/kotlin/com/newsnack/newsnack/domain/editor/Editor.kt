@@ -11,7 +11,7 @@ class Editor(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, unique = true, length = 50)
     val name: String,
 
     @Column(name = "profile_image_url", columnDefinition = "TEXT")
