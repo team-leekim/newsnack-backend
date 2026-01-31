@@ -1,6 +1,7 @@
 package com.newsnack.newsnack.domain.reaction
 
 import com.newsnack.newsnack.domain.content.AiArticle
+import com.newsnack.newsnack.global.common.BaseEntity
 import jakarta.persistence.*
 import java.time.OffsetDateTime
 
@@ -17,7 +18,4 @@ class Reaction(
     @Enumerated(EnumType.STRING)
     @Column(name = "reaction_type", nullable = false, length = 20)
     val reactionType: ReactionType,
-
-    @Column(name = "created_at", nullable = false, updatable = false)
-    val createdAt: OffsetDateTime = OffsetDateTime.now()
-)
+) : BaseEntity()
