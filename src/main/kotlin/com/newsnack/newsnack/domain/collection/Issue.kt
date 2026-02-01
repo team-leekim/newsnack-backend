@@ -2,7 +2,7 @@ package com.newsnack.newsnack.domain.collection
 
 import com.newsnack.newsnack.domain.category.Category
 import jakarta.persistence.*
-import java.time.OffsetDateTime
+import java.time.Instant
 
 @Entity
 @Table(name = "issue")
@@ -19,7 +19,7 @@ class Issue(
     val category: Category? = null,
 
     @Column(name = "batch_time", nullable = false)
-    val batchTime: OffsetDateTime,
+    val batchTime: Instant,
 
     @Column(name = "is_processed", nullable = false)
     var isProcessed: Boolean = false

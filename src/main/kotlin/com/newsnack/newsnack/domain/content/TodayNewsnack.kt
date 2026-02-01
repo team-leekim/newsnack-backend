@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.hypersistence.utils.hibernate.type.json.JsonType
 import jakarta.persistence.*
 import org.hibernate.annotations.Type
-import java.time.OffsetDateTime
+import java.io.Serializable
+import java.time.Instant
 
 @Entity
 @Table(name = "today_newsnack")
@@ -24,7 +25,7 @@ class TodayNewsnack(
         nullable = false,
         columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT NOW()"
     )
-    val publishedAt: OffsetDateTime = OffsetDateTime.now()
+    val publishedAt: Instant = Instant.now()
 )
 
 data class BriefingArticle(
@@ -42,4 +43,4 @@ data class BriefingArticle(
 
     @JsonProperty("end_time")
     val endTime: Double
-)
+) : Serializable

@@ -1,6 +1,6 @@
 package com.newsnack.newsnack.dto.response
 
-import java.time.OffsetDateTime
+import java.time.Instant
 
 data class TodayNewsnackResponse(
     val audioUrl: String,
@@ -18,5 +18,5 @@ data class NewsnackArticleResponse(
     val id: Long,
     val title: String,
     val imageUrl: String,
-    val publishedAt: OffsetDateTime
+    val publishedAt: Instant
 )

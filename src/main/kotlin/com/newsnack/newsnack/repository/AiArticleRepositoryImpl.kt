@@ -7,7 +7,8 @@ import com.newsnack.newsnack.domain.reaction.ReactionType
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository
-import java.time.OffsetDateTime
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 @Repository
 class AiArticleRepositoryImpl(
@@ -33,14 +34,15 @@ class AiArticleRepositoryImpl(
         categoryId?.let { aiArticle.category.id.eq(it) }
 
     override fun findBestByCategory(categoryId: Int): AiArticle? {
-        val now = OffsetDateTime.now()
+        val now = Instant.now()
+        val oneDayAgo = now.minus(1, ChronoUnit.DAYS)
 
         // 1. 최근 24시간 내 인기순 조회
         val bestIn24h = queryFactory.selectFrom(aiArticle)
             .leftJoin(reactionCount).on(aiArticle.id.eq(reactionCount.articleId))
             .where(
                 aiArticle.category.id.eq(categoryId),
-                aiArticle.publishedAt.after(now.minusDays(1))
+                aiArticle.publishedAt.after(oneDayAgo)
             )
             .orderBy(reactionCount.totalCount.desc().nullsLast(), aiArticle.id.desc())
             .fetchFirst()
@@ -55,8 +57,8 @@ class AiArticleRepositoryImpl(
     }
 
     override fun findBestByEmotion(emotionType: ReactionType): AiArticle? {
-        val now = OffsetDateTime.now()
-        val oneDayAgo = now.minusDays(1)
+        val now = Instant.now()
+        val oneDayAgo = now.minus(1, ChronoUnit.DAYS)
 
         val orderSpecifier = when (emotionType) {
             ReactionType.HAPPY -> reactionCount.happyCount.desc()

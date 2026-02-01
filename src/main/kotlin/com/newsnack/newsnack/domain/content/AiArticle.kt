@@ -6,7 +6,8 @@ import com.newsnack.newsnack.domain.editor.Editor
 import io.hypersistence.utils.hibernate.type.json.JsonType
 import jakarta.persistence.*
 import org.hibernate.annotations.Type
-import java.time.OffsetDateTime
+import java.io.Serializable
+import java.time.Instant
 
 @Entity
 @Table(name = "ai_article")
@@ -51,15 +52,15 @@ class AiArticle(
     val originArticles: List<OriginArticle>? = null,
 
     @Column(name = "published_at")
-    val publishedAt: OffsetDateTime? = null
+    val publishedAt: Instant = Instant.now()
 )
 
 data class ImageData(
     @JsonProperty("image_urls")
     val imageUrls: List<String>
-)
+) : Serializable
 
 data class OriginArticle(
     val title: String,
     val url: String
-)
+): Serializable
