@@ -1,6 +1,7 @@
 package com.newsnack.newsnack.domain.reaction
 
 import com.newsnack.newsnack.domain.content.AiArticle
+import com.newsnack.newsnack.global.common.BaseEntity
 import jakarta.persistence.*
 
 @Entity
@@ -19,4 +20,5 @@ class ReactionCount(
     @Column(name = "sad_count") var sadCount: Int = 0,
     @Column(name = "angry_count") var angryCount: Int = 0,
     @Column(name = "empathy_count") var empathyCount: Int = 0
-)
+) : BaseEntity()
+
