@@ -66,25 +66,22 @@ class AiArticleRepositoryImpl(
             ReactionType.EMPATHY -> reactionCount.empathyCount.desc()
         }
 
+        fun fetchBestArticle(timePredicate: BooleanExpression?): AiArticle? {
+            return queryFactory.selectFrom(aiArticle)
+                .leftJoin(reactionCount).on(aiArticle.id.eq(reactionCount.articleId))
+                .leftJoin(aiArticle.category).fetchJoin()
+                .leftJoin(aiArticle.editor).fetchJoin()
+                .where(timePredicate)
+                .orderBy(orderSpecifier, aiArticle.id.desc())
+                .fetchFirst()
+        }
+
         // 1. 최근 24시간 내 발행된 기사 중 해당 감정 점수가 가장 높은 기사 조회
-        val bestIn24h = queryFactory.selectFrom(aiArticle)
-            .leftJoin(reactionCount).on(aiArticle.id.eq(reactionCount.articleId))
-            .leftJoin(aiArticle.category).fetchJoin()
-            .leftJoin(aiArticle.editor).fetchJoin()
-            .where(
-                aiArticle.publishedAt.after(oneDayAgo)
-            )
-            .orderBy(orderSpecifier, aiArticle.id.desc())
-            .fetchFirst()
+        val bestIn24h = fetchBestArticle(aiArticle.publishedAt.after(oneDayAgo))
 
         if (bestIn24h != null) return bestIn24h
 
         // 2. 폴백: 최근 24시간 내 기사가 없으면, 전체 기간 중 해당 감정 점수가 가장 높은 기사 1건 조회
-        return queryFactory.selectFrom(aiArticle)
-            .leftJoin(reactionCount).on(aiArticle.id.eq(reactionCount.articleId))
-            .leftJoin(aiArticle.category).fetchJoin()
-            .leftJoin(aiArticle.editor).fetchJoin()
-            .orderBy(orderSpecifier, aiArticle.id.desc())
-            .fetchFirst()
+        return fetchBestArticle(null)
     }
 }
