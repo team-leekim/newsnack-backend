@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface AiArticleRepository : JpaRepository<AiArticle, Long>, AiArticleRepositoryCustom
+interface AiArticleRepository : JpaRepository<AiArticle, Long>, AiArticleRepositoryCustom {
+    fun findTop10ByEditorIdOrderByPublishedAtDesc(editorId: Int): List<AiArticle>
+}

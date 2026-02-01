@@ -21,4 +21,5 @@ enum class ErrorCode(val status: HttpStatus, val code: String, val message: Stri
     // Content
     TODAY_NEWSNACK_NOT_FOUND(HttpStatus.NOT_FOUND, "N001", "배포된 오늘의 뉴스낵을 찾을 수 없습니다."),
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "N002", "해당 기사를 찾을 수 없습니다."),
+    EDITOR_NOT_FOUND(HttpStatus.NOT_FOUND, "N003", "해당 에디터를 찾을 수 없습니다."),
 }
