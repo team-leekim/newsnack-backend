@@ -3,9 +3,11 @@ package com.newsnack.newsnack.service
 import com.newsnack.newsnack.domain.content.AiArticle
 import com.newsnack.newsnack.domain.reaction.ReactionType
 import com.newsnack.newsnack.dto.response.*
+import com.newsnack.newsnack.global.exception.content.ArticleNotFoundException
 import com.newsnack.newsnack.repository.AiArticleRepository
 import com.newsnack.newsnack.repository.CategoryRepository
 import com.newsnack.newsnack.repository.ReactionCountRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.format.DateTimeFormatter
@@ -46,6 +48,41 @@ class ArticleService(
             contents = content.map { it.toArticleFeedItemResponse() },
             nextCursor = if (hasNext) content.last().id else null,
             hasNext = hasNext
+        )
+    }
+
+    fun getArticleDetail(id: Long): ArticleDetailResponse {
+        val article = aiArticleRepository.findByIdOrNull(id)
+            ?: throw ArticleNotFoundException()
+
+        val reactionCount = reactionCountRepository.findByArticleId(id)
+
+        return ArticleDetailResponse(
+            id = article.id,
+            title = article.title,
+            category = article.category.name,
+            publishedAt = article.publishedAt?.format(formatter) ?: "",
+            contentType = article.contentType.name,
+            summary = article.summary ?: emptyList(),
+            body = article.body ?: "",
+            editor = EditorDetailInfoResponse(
+                id = article.editor.id,
+                name = article.editor.name,
+                imageUrl = article.editor.imageUrl,
+                keywords = article.editor.keywords ?: emptyList(),
+                description = article.editor.description
+            ),
+            imageUrls = article.imageData?.imageUrls ?: emptyList(),
+            reactionStats = ReactionStatsResponse(
+                happy = reactionCount?.happyCount ?: 0,
+                surprised = reactionCount?.surprisedCount ?: 0,
+                sad = reactionCount?.sadCount ?: 0,
+                angry = reactionCount?.angryCount ?: 0,
+                empathy = reactionCount?.empathyCount ?: 0
+            ),
+            originalArticles = article.originArticles?.map {
+                OriginArticleResponse(it.title, it.url)
+            } ?: emptyList()
         )
     }
 
