@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.hypersistence.utils.hibernate.type.json.JsonType
 import jakarta.persistence.*
 import org.hibernate.annotations.Type
+import java.io.Serializable
 import java.time.OffsetDateTime
 
 @Entity
@@ -42,4 +43,4 @@ data class BriefingArticle(
 
     @JsonProperty("end_time")
     val endTime: Double
-)
+) : Serializable

@@ -6,6 +6,7 @@ import com.newsnack.newsnack.domain.editor.Editor
 import io.hypersistence.utils.hibernate.type.json.JsonType
 import jakarta.persistence.*
 import org.hibernate.annotations.Type
+import java.io.Serializable
 import java.time.OffsetDateTime
 
 @Entity
@@ -57,9 +58,9 @@ class AiArticle(
 data class ImageData(
     @JsonProperty("image_urls")
     val imageUrls: List<String>
-)
+) : Serializable
 
 data class OriginArticle(
     val title: String,
     val url: String
-)
+): Serializable
