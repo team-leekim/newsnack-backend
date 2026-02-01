@@ -1,5 +1,6 @@
 package com.newsnack.newsnack.domain.content
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.newsnack.newsnack.domain.category.Category
 import com.newsnack.newsnack.domain.editor.Editor
 import io.hypersistence.utils.hibernate.type.json.JsonType
@@ -54,6 +55,7 @@ class AiArticle(
 )
 
 data class ImageData(
+    @JsonProperty("image_urls")
     val imageUrls: List<String>
 )
 

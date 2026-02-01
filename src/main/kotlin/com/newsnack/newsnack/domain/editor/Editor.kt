@@ -15,8 +15,8 @@ class Editor(
     @Column(nullable = false, unique = true, length = 50)
     val name: String,
 
-    @Column(name = "profile_image_url", columnDefinition = "TEXT")
-    val profileImageUrl: String? = null,
+    @Column(name = "image_url", columnDefinition = "TEXT")
+    val imageUrl: String? = null,
 
     @Column(columnDefinition = "TEXT")
     val description: String? = null,
