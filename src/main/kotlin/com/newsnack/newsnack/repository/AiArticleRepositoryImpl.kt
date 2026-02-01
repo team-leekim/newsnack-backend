@@ -42,7 +42,7 @@ class AiArticleRepositoryImpl(
                 aiArticle.category.id.eq(categoryId),
                 aiArticle.publishedAt.after(now.minusDays(1))
             )
-            .orderBy(reactionCount.totalCount.desc(), aiArticle.id.desc())
+            .orderBy(reactionCount.totalCount.desc().nullsLast(), aiArticle.id.desc())
             .fetchFirst()
 
         if (bestIn24h != null) return bestIn24h
