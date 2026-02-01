@@ -3,7 +3,7 @@ package com.newsnack.newsnack.domain.reaction
 import com.newsnack.newsnack.domain.content.AiArticle
 import com.newsnack.newsnack.global.common.BaseEntity
 import jakarta.persistence.*
-import java.time.OffsetDateTime
+import java.time.Instant
 
 @Entity
 @Table(name = "reaction")

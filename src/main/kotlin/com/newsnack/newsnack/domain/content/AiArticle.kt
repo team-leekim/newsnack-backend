@@ -7,7 +7,7 @@ import io.hypersistence.utils.hibernate.type.json.JsonType
 import jakarta.persistence.*
 import org.hibernate.annotations.Type
 import java.io.Serializable
-import java.time.OffsetDateTime
+import java.time.Instant
 
 @Entity
 @Table(name = "ai_article")
@@ -52,7 +52,7 @@ class AiArticle(
     val originArticles: List<OriginArticle>? = null,
 
     @Column(name = "published_at")
-    val publishedAt: OffsetDateTime? = null
+    val publishedAt: Instant = Instant.now()
 )
 
 data class ImageData(

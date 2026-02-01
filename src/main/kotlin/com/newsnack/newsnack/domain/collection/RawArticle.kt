@@ -2,7 +2,7 @@ package com.newsnack.newsnack.domain.collection
 
 import com.newsnack.newsnack.domain.category.Category
 import jakarta.persistence.*
-import java.time.OffsetDateTime
+import java.time.Instant
 
 @Entity
 @Table(name = "raw_article")
@@ -32,8 +32,8 @@ class RawArticle(
     val issue: Issue? = null,
 
     @Column(name = "published_at", nullable = false)
-    val publishedAt: OffsetDateTime,
+    val publishedAt: Instant,
 
     @Column(name = "crawled_at", nullable = false)
-    val crawledAt: OffsetDateTime = OffsetDateTime.now()
+    val crawledAt: Instant = Instant.now()
 )

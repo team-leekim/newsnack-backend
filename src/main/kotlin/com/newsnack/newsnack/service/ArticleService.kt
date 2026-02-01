@@ -14,6 +14,7 @@ import com.newsnack.newsnack.repository.ReactionRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 @Service
@@ -26,6 +27,7 @@ class ArticleService(
 ) {
     companion object {
         private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+            .withZone(ZoneId.of("UTC"))
     }
 
     fun getCategoryBest(): List<CategoryBestResponse> {
@@ -66,7 +68,7 @@ class ArticleService(
             id = article.id,
             title = article.title,
             category = article.category.name,
-            publishedAt = article.publishedAt?.format(formatter) ?: "",
+            publishedAt = article.publishedAt.let { formatter.format(it) } ?: "",
             contentType = article.contentType.name,
             summary = article.summary ?: emptyList(),
             body = article.body ?: "",
@@ -125,7 +127,7 @@ class ArticleService(
         id = this.id,
         title = this.title,
         thumbnailUrl = this.thumbnailUrl,
-        publishedAt = this.publishedAt?.format(formatter),
+        publishedAt = this.publishedAt.let { formatter.format(it) },
         editorName = this.editor.name
     )
 
@@ -134,7 +136,7 @@ class ArticleService(
         id = this.id,
         title = this.title,
         contentType = this.contentType,
-        publishedAt = this.publishedAt?.format(formatter) ?: "",
+        publishedAt = this.publishedAt.let { formatter.format(it) } ?: "",
         imageUrls = this.imageData?.imageUrls ?: emptyList(),
         editor = EditorInfoResponse(
             id = this.editor.id,
