@@ -17,4 +17,8 @@ enum class ErrorCode(val status: HttpStatus, val code: String, val message: Stri
     INVALID_TYPE_VALUE(HttpStatus.BAD_REQUEST, "C004", "요청 값의 타입이 유효하지 않습니다."),
     ACCESS_DENIED(HttpStatus.FORBIDDEN, "C005", "접근 권한이 없습니다."),
     URL_NOT_FOUND(HttpStatus.NOT_FOUND, "C007", "요청한 URL을 찾을 수 없습니다."),
+
+    // Content
+    TODAY_NEWSNACK_NOT_FOUND(HttpStatus.NOT_FOUND, "N001", "배포된 오늘의 뉴스낵을 찾을 수 없습니다."),
+    ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "N002", "해당 기사를 찾을 수 없습니다."),
 }
