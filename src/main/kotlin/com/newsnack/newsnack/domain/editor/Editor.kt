@@ -1,5 +1,6 @@
 package com.newsnack.newsnack.domain.editor
 
+import com.newsnack.newsnack.global.common.BaseEntity
 import io.hypersistence.utils.hibernate.type.json.JsonType
 import jakarta.persistence.*
 import org.hibernate.annotations.Type
@@ -26,4 +27,4 @@ class Editor(
 
     @Column(name = "persona_prompt", columnDefinition = "TEXT")
     val personaPrompt: String? = null
-)
+) : BaseEntity()

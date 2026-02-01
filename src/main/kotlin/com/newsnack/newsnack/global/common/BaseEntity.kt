@@ -10,12 +10,19 @@ import java.time.OffsetDateTime
 @EntityListeners(AuditingEntityListener::class)
 abstract class BaseEntity {
     @CreatedDate
-    @Column(nullable = false, updatable = false)
+    @Column(
+        nullable = false,
+        updatable = false,
+        columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT NOW()"
+    )
     var createdAt: OffsetDateTime = OffsetDateTime.now()
         protected set
 
     @LastModifiedDate
-    @Column(nullable = false)
+    @Column(
+        nullable = false,
+        columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT NOW()"
+    )
     var updatedAt: OffsetDateTime = OffsetDateTime.now()
         protected set
 }
