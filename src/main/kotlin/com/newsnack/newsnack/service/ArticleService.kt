@@ -1,12 +1,16 @@
 package com.newsnack.newsnack.service
 
 import com.newsnack.newsnack.domain.content.AiArticle
+import com.newsnack.newsnack.domain.reaction.Reaction
+import com.newsnack.newsnack.domain.reaction.ReactionCount
 import com.newsnack.newsnack.domain.reaction.ReactionType
+import com.newsnack.newsnack.dto.request.ReactionRequest
 import com.newsnack.newsnack.dto.response.*
 import com.newsnack.newsnack.global.exception.content.ArticleNotFoundException
 import com.newsnack.newsnack.repository.AiArticleRepository
 import com.newsnack.newsnack.repository.CategoryRepository
 import com.newsnack.newsnack.repository.ReactionCountRepository
+import com.newsnack.newsnack.repository.ReactionRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -18,6 +22,7 @@ class ArticleService(
     private val aiArticleRepository: AiArticleRepository,
     private val categoryRepository: CategoryRepository,
     private val reactionCountRepository: ReactionCountRepository,
+    private val reactionRepository: ReactionRepository,
 ) {
     companion object {
         private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
@@ -84,6 +89,26 @@ class ArticleService(
                 OriginArticleResponse(it.title, it.url)
             } ?: emptyList()
         )
+    }
+
+    @Transactional
+    fun addReaction(articleId: Long, request: ReactionRequest) {
+        val article = aiArticleRepository.findByIdOrNull(articleId)
+            ?: throw ArticleNotFoundException()
+
+        // 1. 리액션 로그 저장
+        reactionRepository.save(
+            Reaction(
+                aiArticle = article,
+                reactionType = request.type
+            )
+        )
+
+        // 2. 리액션 개수 업데이트
+        val reactionCount = reactionCountRepository.findByArticleId(articleId)
+            ?: reactionCountRepository.save(ReactionCount(articleId = articleId, article = article))
+
+        reactionCount.addReaction(request.type)
     }
 
     // CategoryBest 용 변환 함수
