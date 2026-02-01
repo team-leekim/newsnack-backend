@@ -36,7 +36,7 @@ class EditorService(
                     id = article.id,
                     title = article.title,
                     thumbnailUrl = article.thumbnailUrl,
-                    publishedAt = article.publishedAt?.let { formatter.format(it) } ?: ""
+                    publishedAt = formatter.format(article.publishedAt)
                 )
             }
         )

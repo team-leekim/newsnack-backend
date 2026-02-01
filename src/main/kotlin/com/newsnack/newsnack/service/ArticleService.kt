@@ -68,7 +68,7 @@ class ArticleService(
             id = article.id,
             title = article.title,
             category = article.category.name,
-            publishedAt = article.publishedAt.let { formatter.format(it) } ?: "",
+            publishedAt = formatter.format(article.publishedAt),
             contentType = article.contentType.name,
             summary = article.summary ?: emptyList(),
             body = article.body ?: "",
@@ -127,7 +127,7 @@ class ArticleService(
         id = this.id,
         title = this.title,
         thumbnailUrl = this.thumbnailUrl,
-        publishedAt = this.publishedAt.let { formatter.format(it) },
+        publishedAt = formatter.format(this.publishedAt),
         editorName = this.editor.name
     )
 
@@ -136,7 +136,7 @@ class ArticleService(
         id = this.id,
         title = this.title,
         contentType = this.contentType,
-        publishedAt = this.publishedAt.let { formatter.format(it) } ?: "",
+        publishedAt = formatter.format(this.publishedAt),
         imageUrls = this.imageData?.imageUrls ?: emptyList(),
         editor = EditorInfoResponse(
             id = this.editor.id,
