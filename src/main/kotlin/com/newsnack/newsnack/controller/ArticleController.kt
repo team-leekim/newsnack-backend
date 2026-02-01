@@ -29,7 +29,7 @@ class ArticleController(private val articleService: ArticleService) {
     @GetMapping
     fun getArticles(
         @RequestParam(required = false) cursor: Long?,
-        @RequestParam(defaultValue = "10") size: Long,
+        @RequestParam(defaultValue = "5") size: Long,
         @RequestParam(required = false) categoryId: Int?
     ): ResponseEntity<ArticleFeedResponse> {
         val response = articleService.getArticleFeed(cursor, size, categoryId)
