@@ -4,10 +4,9 @@ data class ArticleSummaryResponse(
     val id: Long,
     val title: String,
     val thumbnailUrl: String?,
-    val publishedAt: String,
-    val editorName: String,
-    val totalReactionCount: Int
-)
+    val publishedAt: String? = null,
+    val editorName: String? = null,
+    )
 
 data class CategoryBestResponse(
     val categoryName: String,
@@ -17,10 +16,4 @@ data class CategoryBestResponse(
 data class EmotionBestResponse(
     val emotionType: String,
     val article: ArticleSummaryResponse
-)
-
-data class ArticleFeedResponse(
-    val contents: List<ArticleSummaryResponse>,
-    val nextCursor: Long?,
-    val hasNext: Boolean
 )
