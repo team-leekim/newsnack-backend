@@ -9,4 +9,7 @@ interface AiArticleRepositoryCustom {
 
     // 감정별 베스트 1건 조회
     fun findBestByEmotion(emotionType: ReactionType): AiArticle?
+
+    // 카테고리별 베스트 1건 조회
+    fun findBestByCategory(categoryId: Int): AiArticle?
 }
