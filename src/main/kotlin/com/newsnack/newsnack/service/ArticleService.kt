@@ -17,7 +17,9 @@ class ArticleService(
     private val categoryRepository: CategoryRepository,
     private val reactionCountRepository: ReactionCountRepository,
 ) {
-    private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+    companion object {
+        private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+    }
 
     fun getCategoryBest(): List<CategoryBestResponse> {
         return categoryRepository.findAll().mapNotNull { category ->
