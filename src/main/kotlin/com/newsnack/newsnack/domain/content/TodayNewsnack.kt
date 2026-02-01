@@ -16,8 +16,16 @@ class TodayNewsnack(
 
     @Type(JsonType::class)
     @Column(name = "briefing_articles", nullable = false, columnDefinition = "jsonb")
-    val briefingArticles: List<Map<String, Any>>,
+    val briefingArticles: List<BriefingArticle>,
 
     @Column(name = "published_at")
     val publishedAt: OffsetDateTime? = null
+)
+
+data class BriefingArticle(
+    val articleId: Long,
+    val title: String,
+    val thumbnailUrl: String,
+    val startTime: Double,
+    val endTime: Double
 )

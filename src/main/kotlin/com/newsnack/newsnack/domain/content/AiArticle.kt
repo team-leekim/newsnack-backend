@@ -43,12 +43,21 @@ class AiArticle(
 
     @Type(JsonType::class)
     @Column(name = "image_data", columnDefinition = "jsonb")
-    val imageData: Map<String, Any>? = null,
+    val imageData: ImageData? = null,
 
     @Type(JsonType::class)
     @Column(name = "origin_articles", columnDefinition = "jsonb")
-    val originArticles: List<Map<String, String>>? = null,
+    val originArticles: List<OriginArticle>? = null,
 
     @Column(name = "published_at")
     val publishedAt: OffsetDateTime? = null
+)
+
+data class ImageData(
+    val imageUrls: List<String>
+)
+
+data class OriginArticle(
+    val title: String,
+    val url: String
 )
