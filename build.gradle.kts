@@ -28,6 +28,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("io.hypersistence:hypersistence-utils-hibernate-63:3.15.1")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
 
     // QueryDSL
     implementation("com.querydsl:querydsl-jpa:5.1.0:jakarta")
