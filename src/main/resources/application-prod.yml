@@ -2,10 +2,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
   sql:
@@ -15,8 +14,4 @@ spring:
 logging:
   level:
     root: INFO
-    org.hibernate.SQL: DEBUG # 실행되는 모든 SQL 쿼리
-    org.hibernate.tool.schema: DEBUG # DDL 스키마 작업 관련 로그
-    org.springframework.orm.jpa: DEBUG # JPA 관련 Spring 프레임워크 로그
-    org.springframework.transaction: DEBUG # 트랜잭션 관련 로그
-    com.zaxxer.hikari: DEBUG # HikariCP 연결 풀 관련 로그
+    org.hibernate.sql: INFO
