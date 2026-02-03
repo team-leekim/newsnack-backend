@@ -12,6 +12,9 @@ env:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    outputs:
+      image_uri: ${{ steps.build-image.outputs.image_uri }}
+      registry: ${{ steps.login-ecr.outputs.registry }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,7 +29,7 @@ jobs:
       - name: Build with Gradle
         run: |
           chmod +x ./gradlew
-          ./gradlew build -x test
+          ./gradlew clean bootJar -x test
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -40,11 +43,16 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build and push image
+        id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+          -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+          
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY --all-tags
+          echo "image_uri=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
   deploy:
     needs: build-and-push
@@ -53,21 +61,33 @@ jobs:
       name: prod
     steps:
       - name: Deploy to EC2 via SSH
+        env:
+          IMAGE_URI: ${{ needs.build-and-push.outputs.image_uri }}
+          ECR_REGISTRY: ${{ needs.build-and-push.outputs.registry }}
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
+          envs: IMAGE_URI, ECR_REGISTRY, CONTAINER_NAME, AWS_REGION
           script: |
             # 1. ECR 로그인
-            aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION.amazonaws.com }}
+            aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
+            echo "✅ ECR login successful."
 
-            # 2. 기존 컨테이너 중지
-            docker stop ${{ env.CONTAINER_NAME }} || true
-            docker rm ${{ env.CONTAINER_NAME }} || true
+            # 2. 최신 이미지 pull
+            docker pull $IMAGE_URI
+            echo "✅ Docker image pulled successfully: $IMAGE_URI"
 
-            # 3. 최신 이미지 실행
-            docker run -d --name ${{ env.CONTAINER_NAME }} \
+            # 3. 기존 컨테이너 중지 및 제거
+            if [ "$(docker ps -a -q --filter name=^/${CONTAINER_NAME}$)" ]; then
+              docker stop $CONTAINER_NAME
+              docker rm $CONTAINER_NAME
+              echo "✅ Existing container stopped and removed."
+            fi
+
+            # 4. 새 컨테이너 실행
+            docker run -d --name $CONTAINER_NAME \
               -p 8080:8080 \
               --restart always \
               -e SPRING_PROFILES_ACTIVE=prod \
@@ -76,25 +96,26 @@ jobs:
               -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
               -e AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}" \
               -e AWS_SECRET_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
-              ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
+              $IMAGE_URI
+              echo "✅ New container started."
 
-            # 4. 헬스체크
-            echo "대기 중... 30초 후 헬스체크를 시작합니다."
+            # 5. 헬스체크
+            echo "Waiting for application health check..."
             sleep 30
             
             for i in {1..10}; do
               RESPONSE=$(curl -s http://localhost:8080/actuator/health | grep "UP" || true)
             
               if [ -n "$RESPONSE" ]; then
-                echo "🚀 배포 성공! 애플리케이션이 정상적으로 구동되었습니다."
-                docker image prune -f
+              echo "🚀 Health check PASSED. Deployment successful!"
+                docker image prune -af
                 exit 0
               fi
             
-              echo "재시도 중... ($i/10)"
+              echo "Health check failed, retrying... ($i/10)"
               sleep 10
             done
 
-            echo "❌ 배포 실패: 애플리케이션 헬스체크에 실패했습니다."
-            docker logs ${{ env.CONTAINER_NAME }}
+            echo "❌ Health check FAILED after multiple retries."
+            docker logs --tail 100 $CONTAINER_NAME
             exit 1
