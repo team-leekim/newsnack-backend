@@ -2,7 +2,7 @@ name: Newsnack API - CD
 
 on:
   push:
-    branches: [ main, hotfix/* ]
+    branches: [ main ]
 
 env:
   AWS_REGION: ap-northeast-2
@@ -108,7 +108,7 @@ jobs:
             
               if [ -n "$RESPONSE" ]; then
               echo "🚀 Health check PASSED. Deployment successful!"
-                docker image prune -f
+                docker image prune -af
                 exit 0
               fi
             
