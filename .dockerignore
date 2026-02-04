@@ -1,0 +1,22 @@
+# Git
+.git
+.gitignore
+
+# Gradle 빌드 결과물
+build/
+.gradle/
+
+# IDE 및 OS 설정
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+# 환경변수 및 비밀값
+.env
+*.db
+
+# 도커 관련
+Dockerfile
+docker-compose.yml
+.dockerignore
