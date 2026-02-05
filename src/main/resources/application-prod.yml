@@ -15,3 +15,6 @@ logging:
   level:
     root: INFO
     org.hibernate.sql: INFO
+
+cors:
+  allowed-origins: http://localhost:3000,https://newsnack-omega.vercel.app,https://newsnack.site,https://www.newsnack.site

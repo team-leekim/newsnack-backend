@@ -13,3 +13,6 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 100
+
+cors:
+  allowed-origins: http://localhost:3000
