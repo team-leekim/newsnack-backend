@@ -14,10 +14,10 @@ flowchart LR
     DATA[newsnack-data
 Airflow] -->|AI 요청| AI[newsnack-ai
 FastAPI]
+    AI -->|미디어 업로드| S3[(AWS S3)]
     AI -->|데이터 저장| DB[(PostgreSQL/RDS)]
     DATA -->|기사/이슈 적재| DB
     BE -->|조회| DB
-    AI -->|미디어 업로드| S3[(AWS S3)]
     BE -->|데이터 응답| FE
 ```
 
