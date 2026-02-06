@@ -39,5 +39,11 @@ out/
 ### Kotlin ###
 .kotlin
 
+# etc
 .env
 .DS_Store
+.cursor/
+.github/instructions/
+test/
+data/
+output/
