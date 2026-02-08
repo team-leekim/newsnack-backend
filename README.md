@@ -4,19 +4,22 @@
 
 ## 전체 구조
 
-- **newsnack-data**: Airflow 기반 뉴스 수집, 이슈 집계, AI 생성 요청 오케스트레이션
+- **newsnack-pipeline**: Airflow 기반 뉴스 수집, 이슈 집계, AI 생성 요청 오케스트레이션
 - **newsnack-ai**: FastAPI + LangGraph 기반 워크플로로 AI 기사/오늘의 뉴스낵 생성, Gemini/OpenAI 호출 및 저장
 - **newsnack-backend**: 프론트엔드 공개 API, 조회/큐레이션/반응 처리
 
 ```mermaid
 flowchart LR
-    FE[Frontend] -->|REST| BE[newsnack-backend]
-    DATA[newsnack-data
-Airflow] -->|AI 요청| AI[newsnack-ai
-FastAPI]
-    AI -->|미디어 업로드| S3[(AWS S3)]
-    AI -->|데이터 저장| DB[(PostgreSQL/RDS)]
-    DATA -->|기사/이슈 적재| DB
+    FE[<b>newsnack-frontend</b>
+Next.js] -->|REST| BE[<b>newsnack-backend</b>
+Spring Boot]
+    PIPELINE[<b>newsnack-pipeline</b>
+Airflow] -->|AI 요청| AI[<b>newsnack-ai</b>
+FastAPI + LangGraph]
+    AI -->|미디어 업로드| S3[(<b>Amazon S3</b>)]
+    AI -->|데이터 저장| DB[(<b>Amazon RDS</b>
+PostgreSQL)]
+    PIPELINE -->|기사/이슈 적재| DB
     BE -->|조회| DB
     BE -->|데이터 응답| FE
 ```
