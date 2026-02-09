@@ -8,7 +8,7 @@ data class ArticleSummaryResponse(
     val id: Long,
     @Schema(description = "기사 제목", example = "엔비디아 실적 발표, 주가 급등")
     val title: String,
-    @Schema(description = "썸네일 이미지 URL")
+    @Schema(description = "썸네일 이미지 URL", example = "https://example.com/0.jpg")
     val thumbnailUrl: String?,
     @Schema(description = "발행 일시", example = "2026-01-27 10:00")
     val publishedAt: String? = null,

@@ -5,7 +5,7 @@ import java.time.Instant
 
 @Schema(description = "오늘의 뉴스낵 응답 DTO")
 data class TodayNewsnackResponse(
-    @Schema(description = "오디오 URL")
+    @Schema(description = "오디오 URL", example = "https://example.com/0.mp3")
     val audioUrl: String,
     @Schema(description = "스크립트 목록")
     val script: List<NewsnackScriptResponse>,
@@ -29,8 +29,8 @@ data class NewsnackArticleResponse(
     val id: Long,
     @Schema(description = "기사 제목", example = "엔비디아 역대급 실적 발표")
     val title: String,
-    @Schema(description = "이미지 URL")
+    @Schema(description = "이미지 URL", example = "https://example.com/0.jpg")
     val imageUrl: String,
-    @Schema(description = "발행 일시")
+    @Schema(description = "발행 일시", example = "2026-01-27T15:30:00Z")
     val publishedAt: Instant
 )

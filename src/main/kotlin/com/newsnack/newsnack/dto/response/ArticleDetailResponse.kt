@@ -20,7 +20,7 @@ data class ArticleDetailResponse(
     val body: String,
     @Schema(description = "에디터 정보")
     val editor: EditorDetailInfoResponse,
-    @Schema(description = "이미지 URL 목록")
+    @Schema(description = "이미지 URL 목록", example = "[\"https://example.com/0.jpg\", \"https://example.com/1.jpg\"]")
     val imageUrls: List<String>,
     @Schema(description = "감정 표현 현황")
     val reactionStats: ReactionStatsResponse,
@@ -34,7 +34,7 @@ data class EditorDetailInfoResponse(
     val id: Int,
     @Schema(description = "에디터 이름", example = "에디터A")
     val name: String,
-    @Schema(description = "프로필 이미지 URL")
+    @Schema(description = "프로필 이미지 URL", example = "https://example.com/profile.jpg")
     val imageUrl: String?,
     @Schema(description = "키워드 리스트", example = "[\"#친절한\", \"#IT전문\"]")
     val keywords: List<String>,

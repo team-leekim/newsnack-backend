@@ -23,7 +23,7 @@ data class ArticleFeedItemResponse(
     val contentType: ArticleType,
     @Schema(description = "발행 일시", example = "2026-01-27 15:30")
     val publishedAt: String,
-    @Schema(description = "이미지 URL 목록")
+    @Schema(description = "이미지 URL 목록", example = "[\"https://example.com/0.jpg\", \"https://example.com/1.jpg\"]")
     val imageUrls: List<String>,
     @Schema(description = "에디터 정보")
     val editor: EditorInfoResponse
@@ -35,6 +35,6 @@ data class EditorInfoResponse(
     val id: Int,
     @Schema(description = "에디터 이름", example = "에디터B")
     val name: String,
-    @Schema(description = "프로필 이미지 URL")
+    @Schema(description = "프로필 이미지 URL", example = "https://example.com/profile.jpg")
     val imageUrl: String?
 )

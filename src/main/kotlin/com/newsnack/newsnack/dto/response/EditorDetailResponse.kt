@@ -10,7 +10,7 @@ data class EditorDetailResponse(
     val name: String,
     @Schema(description = "에디터 설명", example = "IT 소식을 가장 쉽게 전달하는 에디터")
     val description: String?,
-    @Schema(description = "프로필 이미지 URL")
+    @Schema(description = "프로필 이미지 URL", example = "https://example.com/profile.jpg")
     val imageUrl: String?,
     @Schema(description = "키워드 리스트", example = "[\"#친절한\", \"#IT전문\"]")
     val keywords: List<String>,
@@ -24,7 +24,7 @@ data class EditorRecentNewsResponse(
     val id: Long,
     @Schema(description = "기사 제목", example = "갤럭시 S26 출시 루머 총정리")
     val title: String,
-    @Schema(description = "썸네일 이미지 URL")
+    @Schema(description = "썸네일 이미지 URL", example = "https://example.com/0.jpg")
     val thumbnailUrl: String?,
     @Schema(description = "발행 일시", example = "2026-01-27 10:00")
     val publishedAt: String
