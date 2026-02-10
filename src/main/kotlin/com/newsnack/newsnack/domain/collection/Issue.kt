@@ -21,6 +21,7 @@ class Issue(
     @Column(name = "batch_time", nullable = false)
     val batchTime: Instant,
 
-    @Column(name = "is_processed", nullable = false)
-    var isProcessed: Boolean = false
+    @Enumerated(EnumType.STRING)
+    @Column(name = "processing_status", nullable = false, length = 20)
+    var processingStatus: ProcessingStatus = ProcessingStatus.PENDING
 )
