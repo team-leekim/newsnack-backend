@@ -14,7 +14,7 @@ COPY src ./src
 RUN ./gradlew bootJar -x test --no-daemon
 
 # --- 2단계: 최종 실행 스테이지 ---
-FROM eclipse-temurin:17-jre-alpine
+FROM amazoncorretto:17-alpine-jdk
 WORKDIR /app
 
 # JVM 메모리 제한
