@@ -14,7 +14,7 @@ COPY src ./src
 RUN ./gradlew bootJar -x test --no-daemon
 
 # --- 2단계: 최종 실행 스테이지 ---
-FROM amazoncorretto:17-alpine-jdk
+FROM amazoncorretto:17-alpine-jre
 WORKDIR /app
 
 # JVM 메모리 제한
