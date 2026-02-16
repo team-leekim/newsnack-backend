@@ -91,7 +91,8 @@ jobs:
             # 4. 새 컨테이너 실행
             docker run -d --name $CONTAINER_NAME \
               -p 8080:8080 \
-              -m 1.2g \
+              --memory-reservation="500m" \
+              --memory="1g" \
               --restart always \
               -e SPRING_PROFILES_ACTIVE=prod \
               -e DB_URL="${{ secrets.DB_URL }}" \
